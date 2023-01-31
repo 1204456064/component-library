@@ -1,0 +1,36 @@
+{
+  "name": "project-ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vue-tsc && vite build && node config/package.ts",
+    "preview": "vite preview",
+    "patch": "node config/updateVersion.ts patch && npm run build"
+
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/cw-component.umd.ts",
+  "module": "./dist/cw-component.es.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/cw-component.es.ts",
+      "require": "./dist/cw-component.umd.ts"
+    }
+  },
+  "dependencies": {
+    "ant-design-vue": "^3.2.15",
+    "element-plus": "^2.2.28",
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0",
+    "vue-tsc": "^1.0.11"
+  }
+}
