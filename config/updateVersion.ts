@@ -3,8 +3,8 @@ const fs = require("fs");
 const path = require("path");
 
 function resolve(dir) {
-    console.log(path.resolve(__dirname, "./", dir));
-    return path.resolve(__dirname, "./", dir);
+    console.log(path.resolve(__dirname, "../", dir));
+    return path.resolve(__dirname, "../", dir);
 }
 // 读取配置文件，变量config的nom类型是Object类型
 const config = require(resolve("package.json"));

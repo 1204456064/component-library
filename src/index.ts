@@ -1,7 +1,7 @@
 import CwButton from "./components/CwButton.vue";
 import CwInput from "./components/CwInput.vue";
-import CwEButton from "./components/CwEButton.vue"
-const components = [CwButton,CwInput,CwEButton];
+import CwAButton from "./components/CwAButton.vue"
+const components = [CwButton,CwInput,CwAButton];
 const install = function(App:any, options:any) {
     components.forEach((component) => {
         App.component(component.name,component);

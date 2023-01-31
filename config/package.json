@@ -1,14 +1,10 @@
 {
     "name": "cw-component-ui",
-    "version": "0.0.6",
+    "version": "0.0.12",
     "description": "",
-    "main": "cw-component.es.ts",
+    "main": "cw-component.umd.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "dependencies": {
-        "vue": "^3.2.45",
-        "element-plus": "^2.2.28"
     },
     "keywords": [],
     "author": "",

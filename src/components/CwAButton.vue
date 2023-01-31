@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <a-button type="primary">大多数</a-button>
+  <div class="content">
+    <a-button type="primary" class="content-child">我是组件按钮q</a-button>
+    <a-tag color="blue" class="content-child">我是蓝色Tag</a-tag>
+    <a-tag class="content-child">purple</a-tag>
   </div>
 </template>
 
@@ -11,11 +13,17 @@ export default {
 </script>
 <script setup></script>
 
-<style>
-.test {
-  height: 100px;
+<style scoped>
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-child {
   width: 200px;
-  background-color: red;
-  color: black;
+  height: 30px;
+  margin-top: 10px;
 }
 </style>
