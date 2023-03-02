@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <a-button type="primary" class="content-child">我是组件按钮q</a-button>
+    <a-button type="primary" class="content-child">我是组件按钮qq</a-button>
     <a-tag color="blue" class="content-child">我是蓝色Tag</a-tag>
     <a-tag class="content-child">purple</a-tag>
   </div>

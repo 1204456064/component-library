@@ -10,17 +10,22 @@ function resolve(dir) {
 const config = require(resolve("package.json"));
 console.log("process是--" + process.argv);
 
+// node命令中的patch
 const updateType = process.argv[2];
+
+// 更新版本类型
 const UPDATE_DICT = {
     patch: "补丁",
     minor: "小版本",
     major: "大版本",
 };
+
 console.log("当前版本----------" + config.version);
 
 console.log("更新类型: %s", UPDATE_DICT[updateType]);
 
 const versionList = config.version.split(".");
+
 if (updateType === "patch") {
     versionList[2] = (Number(versionList[2]) + 1).toString();
 } else if (updateType === "minor") {
