@@ -8,6 +8,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+// logo对应的名称
 const title = ref<string | boolean | undefined>("我是导航栏");
 
 // 折叠样式名
@@ -19,8 +20,6 @@ const logoClassName = ref<string>("");
 defineExpose({
   changeCollapsed(value: boolean) {
     logoClassName.value = value ? "logo--collapse" : "";
-    console.log(value);
-
     title.value = value ? "" : "我是导航栏";
   },
 });
@@ -31,7 +30,7 @@ defineExpose({
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 50px;
+  height: 64px;
   font-size: 16px;
   cursor: pointer;
   box-shadow: rgb(0 21 41 / 2%) 0 1px 4px;

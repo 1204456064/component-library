@@ -2,11 +2,9 @@ import  * as VueRouter from 'vue-router'
 import Home from '@/views/home.vue'
 import Login  from '@/views/login.vue'
 
-const routes = [
+ const routes = [
     { path: '/login', component: Home },
-
     { path: '/', component: Login },
-
     { path: '/layout', component: ()=>import('@/layout/index.vue') },
 ]
 
@@ -17,3 +15,5 @@ const router = VueRouter.createRouter({
   })
 
   export default router
+
+  export { routes }
