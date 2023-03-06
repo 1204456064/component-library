@@ -7,6 +7,7 @@ const routes = [
 
     { path: '/', component: Login },
 
+    { path: '/layout', component: ()=>import('@/layout/index.vue') },
 ]
 
 const router = VueRouter.createRouter({

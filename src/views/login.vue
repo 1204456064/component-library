@@ -39,7 +39,9 @@
           <a-checkbox v-model:checked="form.checked">记住我</a-checkbox>
         </a-form-item>
 
-        <a-button type="primary" class="login__login-button">登录</a-button>
+        <a-button type="primary" class="login__login-button" @click="clickLogin"
+          >登录</a-button
+        >
       </a-form>
     </div>
   </div>
@@ -49,6 +51,9 @@
 import { ref } from "vue";
 import { particles } from "./particles";
 import { loadFull } from "tsparticles";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 // form表单
 const form = ref<{ userName: string; password: string; checked: boolean }>({
   userName: "admin",
@@ -63,6 +68,10 @@ const particlesInit = async (engine: any) => {
 const particlesLoaded = async (container: any) => {
   console.log("Particles container loaded", container);
 };
+
+function clickLogin() {
+  router.push({ path: "/layout" });
+}
 </script>
 <style lang="scss" scoped>
 html,
