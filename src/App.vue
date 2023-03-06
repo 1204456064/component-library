@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import CwAButton from "./components/CwAButton.vue";
+import CwAButton from "@/components/CwAButton.vue";
 </script>
 
 <template>
   <div class="app">
-    <CwAButton class="app-content"></CwAButton>
+    <!-- <CwAButton class="app-content"></CwAButton> -->
+
+    <router-view to="/login"></router-view>
   </div>
 </template>
 

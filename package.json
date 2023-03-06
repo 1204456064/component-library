@@ -36,5 +36,8 @@
     "peerDependencies": {
         "ant-design-vue": "^3.2.15",
         "vue": "^3.2.45"
+    },
+    "dependencies": {
+        "vue-router": "4"
     }
 }
