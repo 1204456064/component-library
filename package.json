@@ -40,6 +40,7 @@
         "vue": "^3.2.45"
     },
     "dependencies": {
+        "@ant-design/icons-vue": "^6.1.0",
         "particles.vue3": "^2.9.3",
         "vue-router": "4"
     }
