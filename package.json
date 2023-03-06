@@ -27,7 +27,9 @@
         "@types/node": "^18.11.18",
         "@vitejs/plugin-vue": "^4.0.0",
         "ant-design-vue": "^3.2.15",
+        "sass": "^1.58.3",
         "ts-node": "^10.9.1",
+        "tsparticles": "^2.9.3",
         "typescript": "^4.9.3",
         "vite": "^4.0.0",
         "vue": "^3.2.45",
@@ -38,6 +40,7 @@
         "vue": "^3.2.45"
     },
     "dependencies": {
+        "particles.vue3": "^2.9.3",
         "vue-router": "4"
     }
 }
