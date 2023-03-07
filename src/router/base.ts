@@ -13,7 +13,7 @@ export const HOME_ROUTE: RouteRecordRaw = {
     name: 'home',
     component: ()=> import('@/views/home.vue'),
     meta: {
-        title: '首页1',
+        title: '首页',
         icon: 'user-outlined'
     }
 }

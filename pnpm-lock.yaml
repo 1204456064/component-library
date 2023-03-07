@@ -5,6 +5,7 @@ specifiers:
   '@types/node': ^18.11.18
   '@vitejs/plugin-vue': ^4.0.0
   ant-design-vue: ^3.2.15
+  echarts: ^5.4.1
   particles.vue3: ^2.9.3
   sass: ^1.58.3
   ts-node: ^10.9.1
@@ -17,6 +18,7 @@ specifiers:
 
 dependencies:
   '@ant-design/icons-vue': 6.1.0_vue@3.2.45
+  echarts: 5.4.1
   particles.vue3: 2.9.3
   vue-router: 4.1.6_vue@3.2.45
 
@@ -591,6 +593,13 @@ packages:
     resolution: {integrity: sha512-bvVTQe1lfaUr1oFzZX80ce9KLDlZ3iU+XGNE/bz9HnGdklTieqsbmsLHe+rT2XWqopvL0PckkYqN7ksmm5pe3w==}
     dev: true
 
+  /echarts/5.4.1:
+    resolution: {integrity: sha512-9ltS3M2JB0w2EhcYjCdmtrJ+6haZcW6acBolMGIuf01Hql1yrIV01L1aRj7jsaaIULJslEP9Z3vKlEmnJaWJVQ==}
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.4.1
+    dev: false
+
   /esbuild/0.16.17:
     resolution: {integrity: sha512-G8LEkV0XzDMNwXKgM0Jwu3nY3lSTwSGY6XbxM9cr9+s0T/qSV1q1JVPBGzm3dcjhCic9+emZDmMffkwgPeOeLg==}
     engines: {node: '>=12'}
@@ -891,6 +900,10 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
+
+  /tslib/2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+    dev: false
 
   /tsparticles-engine/2.9.3:
     resolution: {integrity: sha512-iAD8LyRH//kx10fDMm6AfQV6dRHs1ZacUUHqVwfutcqM4x1IV2ygpjk0X87LKCnBxYeIMG78+tlxXpnpwUccOg==}
@@ -1283,3 +1296,9 @@ packages:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
     dev: true
+
+  /zrender/5.4.1:
+    resolution: {integrity: sha512-M4Z05BHWtajY2241EmMPHglDQAJ1UyHQcYsxDNzD9XLSkPDqMq4bB28v9Pb4mvHnVQ0GxyTklZ/69xCFP6RXBA==}
+    dependencies:
+      tslib: 2.3.0
+    dev: false
