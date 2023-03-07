@@ -1,11 +1,21 @@
+import { RouteRecordRaw } from 'vue-router';
 import  * as VueRouter from 'vue-router'
-import Home from '@/views/home.vue'
-import Login  from '@/views/login.vue'
+import {LOGIN_ROUTE } from './base'
+import { menu } from './menu/menu'
 
- const routes = [
-    { path: '/login', component: Home },
-    { path: '/', component: Login },
-    { path: '/layout', component: ()=>import('@/layout/index.vue') },
+ const routes:Array<RouteRecordRaw> = [
+    {
+      path: '/',
+      name: '/',
+      component: () => import('@/layout/index.vue'),
+      // redirect: '/home',
+      meta: {
+          icon: 'el-icon-setting',
+          title: 'INDEX',
+      },
+      children: menu,
+    },
+    LOGIN_ROUTE
 ]
 
 const router = VueRouter.createRouter({

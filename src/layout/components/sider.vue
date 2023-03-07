@@ -19,6 +19,13 @@
 import { ref } from "vue";
 import Logo from "./logo.vue";
 import { UserOutlined } from "@ant-design/icons-vue";
+import { useRouter, useRoute } from "vue-router";
+const route = useRouter();
+const useRoutes = useRoute();
+
+console.log(route);
+console.log(useRoutes);
+
 interface menuItem {
   title: string;
   key: string;
