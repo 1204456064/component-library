@@ -70,7 +70,7 @@ const particlesLoaded = async (container: any) => {
 };
 
 function clickLogin() {
-  router.push({ path: "/layout" });
+  router.push({ path: "/" });
 }
 </script>
 <style lang="scss" scoped>

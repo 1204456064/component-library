@@ -22,16 +22,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { UserOutlined } from "@ant-design/icons-vue";
 import { menu } from "../../router/menu/menu";
 import { RouteRecordRaw } from "vue-router";
 import subMenu from "./subMenu.vue";
+import { HOME_PATH } from "../../router/base";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
 // 侧边栏列表
 const menuList = ref<RouteRecordRaw[]>(menu);
 
 // 选中的key
-const selectedKeys = ref<string[]>([]);
+const selectedKeys = ref<string[]>([HOME_PATH]);
 
 /**
  * @description 用来确认是否有子路由
@@ -49,6 +53,10 @@ function hasSubMenu(menu: RouteRecordRaw) {
 
   return true;
 }
+
+onBeforeMount(() => {
+  router.push({ path: HOME_PATH });
+});
 
 /**
  * 暴露属性/方法

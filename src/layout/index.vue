@@ -3,16 +3,20 @@
     <Sider ref="siderRef"></Sider>
     <a-layout>
       <a-layout-header class="layout__header">
-        <menu-unfold-outlined
-          v-if="collapsed"
-          class="layout__trigger"
-          @click="changeCollapsed"
-        />
-        <menu-fold-outlined
-          v-else
-          class="layout__trigger"
-          @click="changeCollapsed"
-        />
+        <div class="layout__setting">
+          <menu-unfold-outlined
+            v-if="collapsed"
+            class="layout__trigger"
+            @click="changeCollapsed"
+          />
+          <menu-fold-outlined
+            v-else
+            class="layout__trigger"
+            @click="changeCollapsed"
+          />
+
+          <Setting></Setting>
+        </div>
       </a-layout-header>
       <Content></Content>
     </a-layout>
@@ -23,6 +27,7 @@
 import { ref } from "vue";
 import Sider from "./components/sider.vue";
 import Content from "./components/content.vue";
+import Setting from "./components/setting.vue";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons-vue";
 
 // 菜单栏的打开与关闭属性
@@ -53,6 +58,12 @@ function changeCollapsed() {
   &__header {
     background: #fff;
     padding: 0;
+  }
+
+  &__setting {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 </style>
