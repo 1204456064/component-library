@@ -7,9 +7,10 @@
   >
     <Logo ref="logoRef"></Logo>
     <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-      <a-menu-item v-for="item in menuList" :key="item.key">
+      <a-menu-item v-for="item in menuList" :key="item.path">
         <user-outlined />
-        <span>{{ item.title }}</span>
+        <!-- <component :is="item.meta!.icon"></component> -->
+        <span>{{ item.meta!.title }}</span>
       </a-menu-item>
     </a-menu>
   </a-layout-sider>
@@ -19,29 +20,12 @@
 import { ref } from "vue";
 import Logo from "./logo.vue";
 import { UserOutlined } from "@ant-design/icons-vue";
-import { useRouter, useRoute } from "vue-router";
-const route = useRouter();
-const useRoutes = useRoute();
+import { menu } from "../../router/menu/menu";
+import { RouteRecordRaw } from "vue-router";
 
-console.log(route);
-console.log(useRoutes);
-
-interface menuItem {
-  title: string;
-  key: string;
-}
-
+console.log(menu);
 // 侧边栏列表
-const menuList = ref<menuItem[]>([
-  {
-    title: "侧边栏1",
-    key: "1",
-  },
-  {
-    title: "侧边栏2",
-    key: "2",
-  },
-]);
+const menuList = ref<RouteRecordRaw[]>(menu);
 
 // 菜单栏的打开与关闭属性
 const collapsed = ref<boolean>(false);
