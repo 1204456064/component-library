@@ -1,5 +1,5 @@
 <template>
-  <a-layout-content class="content">
+  <a-layout-content>
     <router-view v-slot="{ Component, route }">
       <transition name="fade-slide" mode="out-in">
         <!-- 缓存 -->
@@ -11,10 +11,3 @@
   </a-layout-content>
 </template>
 <script lang="ts" setup></script>
-<style lang="scss" scoped>
-.content {
-  margin: 24px 16px;
-  padding: 24px;
-  background: #fff;
-}
-</style>
