@@ -3,7 +3,6 @@
     <template v-for="menu in menuList" :key="menu.path">
       <a-sub-menu v-if="hasSubMenu(menu)">
         <template #title>{{ menu.meta!.title }}</template>
-
         <template #icon>
           <UserOutlined />
         </template>
@@ -11,9 +10,10 @@
         <subMenu :sub-menu-list="menu.children" />
       </a-sub-menu>
 
-      <a-menu-item v-else>
+      <a-menu-item v-else :key="menu.path">
         <user-outlined />
-        <span>{{ menu.meta!.title }}</span>
+        <!-- <span>{{ menu.meta!.title }}</span> -->
+        <router-link :to="menu.path"> {{ menu.meta!.title }}</router-link>
       </a-menu-item>
     </template>
   </a-menu>
@@ -29,7 +29,7 @@ import subMenu from "./subMenu.vue";
 const menuList = ref<RouteRecordRaw[]>(menu);
 
 // 选中的key
-const selectedKeys = ref<string[]>(["1"]);
+const selectedKeys = ref<string[]>([]);
 
 /**
  * @description 用来确认是否有子路由

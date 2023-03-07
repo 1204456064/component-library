@@ -9,9 +9,9 @@
       <subMenu :sub-menu-list="menu.children" />
     </a-sub-menu>
 
-    <a-menu-item v-else>
+    <a-menu-item v-else :key="menu.path">
       <user-outlined />
-      <span>{{ menu.meta!.title }}</span>
+      <router-link :to="menu.path"> {{ menu.meta!.title }}</router-link>
     </a-menu-item>
   </template>
 </template>

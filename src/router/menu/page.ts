@@ -3,7 +3,7 @@ export const PAGE_ROUTE: RouteRecordRaw = {
     path: '/page-demo',
     name: 'page-demo',
     // component: ()=> import('@/views/index.vue'),
-    redirect:'',
+    redirect:'/page-demo/page',
     meta: {
         title: 'PageDemo',
         icon: 'user-outlined'
