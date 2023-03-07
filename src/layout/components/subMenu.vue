@@ -1,7 +1,7 @@
 <template>
   <template v-for="menu in subMenuList" :key="menu.path">
     <a-sub-menu v-if="hasSubMenu(menu)">
-      <template #title>{{ menu.meta!.title }}</template>
+      <!-- <template #title>{{ menu.meta!.title }}</template> -->
 
       <template #icon>
         <UserOutlined />
@@ -9,10 +9,14 @@
       <subMenu :sub-menu-list="menu.children" />
     </a-sub-menu>
 
-    <a-menu-item v-else :key="menu.path">
-      <user-outlined />
-      <router-link :to="menu.path"> {{ menu.meta!.title }}</router-link>
-    </a-menu-item>
+    <template v-else>
+      <a-menu-item :key="menu.path">
+        <template #icon>
+          <UserOutlined />
+        </template>
+        <router-link :to="menu.path"> {{ menu.meta!.title }}</router-link>
+      </a-menu-item>
+    </template>
   </template>
 </template>
 

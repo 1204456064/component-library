@@ -2,7 +2,7 @@
   <a-layout class="layout">
     <Sider ref="siderRef"></Sider>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 0">
+      <a-layout-header class="layout__header">
         <menu-unfold-outlined
           v-if="collapsed"
           class="layout__trigger"
@@ -48,6 +48,11 @@ function changeCollapsed() {
     padding: 0 24px;
     cursor: pointer;
     transition: color 0.3s;
+  }
+
+  &__header {
+    background: #fff;
+    padding: 0;
   }
 }
 </style>

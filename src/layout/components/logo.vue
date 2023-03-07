@@ -40,7 +40,7 @@ defineExpose({
     width: 40px;
     height: 40px;
     // margin-top: 5%;
-    margin-left: 17px;
+    margin-left: 20px;
     line-height: 80px;
   }
 

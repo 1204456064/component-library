@@ -3,7 +3,7 @@
     <router-view v-slot="{ Component, route }">
       <transition name="fade-slide" mode="out-in">
         <!-- 缓存 -->
-        <!-- <keep-alive :include="cachePageList"> -->
+        <!-- <keep-alive> -->
         <component :is="Component" :key="route.fullPath"></component>
         <!-- </keep-alive> -->
       </transition>
