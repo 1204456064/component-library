@@ -1,7 +1,13 @@
 <template>
-  <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+  <a-menu
+    v-model:selectedKeys="selectedKeys"
+    theme="dark"
+    mode="inline"
+    :open-keys="openKeys"
+    @openChange="onOpenChange"
+  >
     <template v-for="menu in menuList" :key="menu.path">
-      <a-sub-menu v-if="hasSubMenu(menu)">
+      <a-sub-menu v-if="hasSubMenu(menu)" :key="menu.path">
         <template #title>{{ menu.meta!.title }}</template>
         <template #icon>
           <UserOutlined />
@@ -36,6 +42,18 @@ const menuList = ref<RouteRecordRaw[]>(menu);
 
 // 选中的key
 const selectedKeys = ref<string[]>([HOME_PATH]);
+
+// 当前展开的 SubMenu 菜单项 key 数组
+const openKeys = ref<string[]>([]);
+
+/**
+ * @description SubMenu 展开/关闭的回调
+ * @param openKey 展开的key集合
+ */
+const onOpenChange = (openKey: string[]) => {
+  // console.log(openKey);
+  // console.log(openKeys.value);
+};
 
 /**
  * @description 用来确认是否有子路由
