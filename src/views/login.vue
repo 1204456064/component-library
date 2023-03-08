@@ -52,7 +52,7 @@ import { ref } from "vue";
 import { particles } from "./particles";
 import { loadFull } from "tsparticles";
 import { useRouter } from "vue-router";
-
+import request from "@/utils/request";
 const router = useRouter();
 // form表单
 const form = ref<{ userName: string; password: string; checked: boolean }>({
@@ -69,7 +69,18 @@ const particlesLoaded = async (container: any) => {
   console.log("Particles container loaded", container);
 };
 
-function clickLogin() {
+/**
+ * 登录
+ */
+async function clickLogin() {
+  const res = await request.post("/system/user/manage/login", {
+    account: "admin",
+    password: 123456,
+  });
+
+  if (!res) {
+    return;
+  }
   router.push({ path: "/" });
 }
 </script>

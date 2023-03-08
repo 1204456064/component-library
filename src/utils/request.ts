@@ -1,11 +1,16 @@
 import axios from 'axios'
 
-const instance = axios.create({
-    baseURL: '/s23',
+import { BASE_URL } from '@/constant/global';
+
+const service = axios.create({
+    baseURL: BASE_URL,
     timeout: 60000,
     headers: {
         'Content-Type': 'application/json',
     },
 })
 
-export default instance
+const get = service.get;
+export { get }
+
+export default service
