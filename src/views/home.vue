@@ -26,7 +26,6 @@
 <script setup lang="ts">
 import * as echarts from "echarts";
 import { onMounted, reactive } from "vue";
-
 let myChart: echarts.EChartsType | null = null;
 
 const categories = (function () {
