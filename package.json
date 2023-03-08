@@ -43,6 +43,7 @@
         "@ant-design/icons-vue": "^6.1.0",
         "echarts": "^5.4.1",
         "particles.vue3": "^2.9.3",
+        "pinia": "^2.0.33",
         "vue-router": "4"
     }
 }

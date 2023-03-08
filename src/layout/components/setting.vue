@@ -18,13 +18,18 @@
 import { UserOutlined } from "@ant-design/icons-vue";
 import { useRouter } from "vue-router";
 import { LOGIN_PATH } from "../../router/base";
-
+import request from "@/utils/request";
 const route = useRouter();
 
 /**
  * @description 退出登录
  */
-function handleMenuClick() {
+async function handleMenuClick() {
+  const res = await request.post("/system/user/manage/logout");
+
+  if (!res) {
+    return;
+  }
   route.push({ path: LOGIN_PATH });
 }
 </script>
