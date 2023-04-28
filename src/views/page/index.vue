@@ -4,12 +4,13 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import request from "@/utils/request";
-function sendRequest() {
-  request.get("/ddd", {
-    params: {
-      type: 123,
-    },
+async function sendRequest() {
+  const res = await request.post("/v1/user/add-username", {
+    title: "chenwen",
+    type: "q3",
+    num: 4,
   });
+  console.log(res);
 }
 onMounted(() => {
   console.log("我加载了");

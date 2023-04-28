@@ -43,6 +43,16 @@
           >登录</a-button
         >
       </a-form>
+
+      <a-modal
+        v-model:visible="visible"
+        title="提示"
+        okText="确认"
+        cancelText="取消"
+        @ok="confirm"
+      >
+        <p>暂未查到此账号！是否确认注册并登录?</p>
+      </a-modal>
     </div>
   </div>
 </template>
@@ -55,6 +65,10 @@ import { useRouter } from "vue-router";
 import request from "@/utils/request";
 import { useStore } from "@/store";
 const router = useRouter();
+
+// 是否显示弹框
+const visible = ref<boolean>(false);
+
 // form表单
 const form = ref<{ userName: string; password: string; checked: boolean }>({
   userName: "admin",
@@ -74,16 +88,42 @@ const particlesLoaded = async (container: any) => {
  * @description 登录
  */
 async function clickLogin() {
-  const res = await request.post("/system/user/manage/login", {
-    account: "admin",
-    password: 123456,
+  const res = await request.post("/v1/user/get-username", {
+    userName: form.value.userName,
+    password: form.value.password,
   });
 
-  if (!res) {
+  if (!res.data) {
+    visible.value = true;
     return;
   }
 
   useStore().save(res.data.data);
+  router.push({ path: "/" });
+}
+
+/**
+ * @description 确认注册
+ */
+async function confirm() {
+  const res = await request.post("/v1/user/add-username", {
+    userName: form.value.userName,
+    password: form.value.password,
+  });
+
+  if (!res.data) {
+    return;
+  }
+
+  const respon = await request.post("/v1/user/get-username", {
+    userName: form.value.userName,
+    password: form.value.password,
+  });
+  if (!respon.data) {
+    return;
+  }
+
+  useStore().save(respon.data);
   router.push({ path: "/" });
 }
 </script>

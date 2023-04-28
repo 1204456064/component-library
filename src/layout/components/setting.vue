@@ -25,7 +25,7 @@ const route = useRouter();
  * @description 退出登录
  */
 async function handleMenuClick() {
-  const res = await request.post("/system/user/manage/logout");
+  const res = await request.post("/v1/cw/layout");
 
   if (!res) {
     return;

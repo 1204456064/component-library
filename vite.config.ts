@@ -9,6 +9,18 @@ export default defineConfig({
       '@': path.resolve(__dirname,'./src')
     }
   },
+  server: {
+    port: 5173,
+    open: true,
+    https:false,
+    proxy: {
+      "/v1": {
+        target: "http://192.168.3.23:5000",
+        changeOrigin : true,
+        rewrite: (path) => path.replace('^/', "")
+      }
+    }
+  },
   build: {
     // lib: {
     //   // 入口文件，因为库模式不能用html页面作为入口

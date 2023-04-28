@@ -16,6 +16,24 @@ export const PAGE_ROUTE: RouteRecordRaw = {
                 icon: 'user-outlined',
                 title: 'Page',
             }
+        },
+        {
+            path: '/page-demo/table',
+            name: 'table',
+            component: () => import('@/views/table/index.vue'),
+            meta: {
+                icon: 'user-outlined',
+                title: 'table',
+            }
+        },
+        {
+            path: '/page-demo/nb-table',
+            name: 'nb-table',
+            component: () => import('@/views/table/nb-table.vue'),
+            meta: {
+                icon: 'user-outlined',
+                title: 'nb-table',
+            }
         }
     ]
 }
