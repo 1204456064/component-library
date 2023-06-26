@@ -21,7 +21,8 @@ import { menu } from './menu/menu'
 const router = VueRouter.createRouter({
     // 哈希到服务器上不会刷新空白
     history: VueRouter.createWebHashHistory(),
-    routes, // `routes: routes` 的缩写
+    // `routes: routes` 的缩写
+    routes, 
   })
 
   export default router
