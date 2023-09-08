@@ -34,6 +34,15 @@ export const PAGE_ROUTE: RouteRecordRaw = {
                 icon: 'user-outlined',
                 title: 'nb-table',
             }
+        },
+        {
+            path: '/page-demo/preview',
+            name: 'preview',
+            component: () => import('@/views/preview/index.vue'),
+            meta: {
+                icon: 'user-outlined',
+                title: 'preview',
+            }
         }
     ]
 }
