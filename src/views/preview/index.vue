@@ -1,230 +1,212 @@
 <template>
     <div>
-        <a-button type="primary" @click="showModal">Open Modal</a-button>
-
-        <a-modal width="100%" wrap-class-name="full-modal" v-model:visible="visible" title="Basic Modal" @ok="handleOk">
-            <template #title>
-                <div style="position: fixed; bottom: 0; left: 50%;margin-left: -50px;width: 100px;">
-                    <a-button key="back" @click="visible = false">关闭1231</a-button>
-                </div>
-            </template>
-            <input type="file" ref="fileinput" @change="uploadFile" />
-            <div ref="canvasCont">
-                <canvas ref="myVancas" ></canvas>
-            </div>
-        
-            <template #footer>
-                <div style="position: fixed; bottom: 0; left: 50%;margin-left: -50px;width: 100px;">
-                    <a-button key="back" @click="visible = false">关闭</a-button>
-                </div>
-            </template>
-        </a-modal>
+        <input id="fileinput" type="file" @change="uploadFile" />
+        <div id="canvasCont">
+            <canvas v-for="index in canvasTotalPage" :id="`myVancas${index}`" :key="index"></canvas>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 
-import * as pdfjsLib from "pdfjs-dist/build/pdf";
-// import workerSrc from 'pdfjs-dist/build/pdf.worker.entry';
-// pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
+import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
 
-const visible = ref<boolean>(false)
+/**
+ * pdf下载以及加载函数(异步)
+ */
+const pdfLoadTask = ref();
 
-const fileinput = ref()
+/**
+ * 需要绘制pdf的总页数
+ */
+const canvasTotalPage = ref<number>(1);
 
-const canvasCont = ref()
+/**
+ * 引入pdf.js的字体，插件无法解析某些特殊字体，所以需要加载特定字体cmap文件
+ * 使用cdn的的形式，内网或者没网的时候会失效，建议直接把这个目录下的文件下载到本地，引用本地的资源
+ */
+const cmapUrl = ref<string>('https://unpkg.com/pdfjs-dist@2.6.347/cmaps/');
 
+/**
+ * 上传pdf文件
+ */
+function uploadFile() {
+    // 获取到上传文件input组件的dom实例，实际上用ref也行，但是vue2和vue3使用ref的写法上有区别，就不麻烦搞ref了，统一用id了
+    const file = document.getElementById('fileinput').files[0];
 
-const myVancas = ref()
+    // FileReader是一个强大的读取文件的api，创建一个FileReader实例来读取文件
+    const reader = new FileReader();
 
-const pdfData = ref(null)
+    // 将文件内容转换为base64编码的url，方便pdfjs-dist插件加载pdf文档
+    reader.readAsDataURL(file);
 
-const renderingPage = ref<boolean>(false)
-
-function showModal(){
-    visible.value = true
+    // FileReader读取文件完成后触发，此时拿到base64编码的url了
+    reader.onload = () => {
+        // 直接用atob代码ts会报错，因为网上说这个已经弃用了，但是在代码里面还是能用，不过ts会报错
+        const data = window.atob(reader.result.substring(reader.result.indexOf(',') + 1));
+        // 拿到base64编码的url去加载pdf文档
+        loadPdfData(data);
+    };
 }
 
-function uploadFile(){
-    let inputDom = fileinput.value
-
-    let file = fileinput.value.files[0]
-
-    
-
-
-    let reader = new FileReader()
-
-    reader.readAsDataURL(file)
-
-    reader.onload = ()=>{
-        console.log(reader.result);
-        
-        let data = atob(reader.result.substring(reader.result.indexOf(',') + 1))
-        console.log(JSON.parse(decodeURIComponent(encodeURI(data))));
-        
-        loadPdfData(data)
-    }
-}
-
-function loadPdfData(data){
-    // 引入pdf.js的字体
-    let CMAP_URL = "https://unpkg.com/pdfjs-dist@2.0.943/cmaps/";
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js";
-
-    pdfData.value = pdfjsLib.getDocument({
+/**
+ * 通过pdfjs-dist插件生产pdf
+ * @param data base64编码的url
+ */
+function loadPdfData(data: string) {
+    // pdfjsLib.getDocument是获取pdf文档的方法，返回的是premise对象，对象包含一些pdf文档的信息以及操作pdf文档的api
+    pdfLoadTask.value = pdfjsLib.getDocument({
         data: data,
-        cMapUrl: CMAP_URL,
-        cMapPacked: true
-    })
-    console.log(pdfData.value);
-    renderPage(2)
+        cMapUrl: cmapUrl.value,
+        cMapPacked: true,
+    });
+
+    // 渲染页面,至少一页
+    renderPage(1);
 }
 
+/**
+ * 渲染指定页码的pdf文档
+ * @param num 指定页码
+ */
+function renderPage(num: number) {
+    // 异步函数结束后返回pdf的基本信息以及一些api，是一个对象
+    pdfLoadTask.value.promise.then((pdf: any) => {
+        // 记录一下总页数，多页的情况，每页都需要新建一个画布
+        canvasTotalPage.value = pdf.numPages;
 
-const pdfPageNumber  = ref()
+        // 通过调用pdf对象的getPage方法，将指定的页码传入，可以获取传入页码的引用
+        pdf.getPage(num).then((page: any) => {
+            // 获取canvas的DOM对象
+            const canvas: any = document.getElementById(`myVancas${num}`);
 
-const width = ref('')
-const height = ref('')
+            // 获取canvas的渲染上下文(包含canvas的引用以及绘图功能)
+            const ctx = canvas.getContext('2d');
 
-const pageNo = ref(null)
+            // 获取页面的像素比率
+            const ratio = getRatio(ctx);
 
-function renderPage(num){
+            // 页面的视口宽度，也就是元素的可视宽度
+            // 不太理解用offsetWidth，可以看下这篇文章https://zhuanlan.zhihu.com/p/603633893
+            const viewWidth = document.getElementById('canvasCont').offsetWidth;
 
-    renderingPage.value = true;
-    pdfData.value.promise.then((pdf)=>{
-        pdfPageNumber.value = pdf.numPages
+            // pdf文档的宽度
+            const pdfWidth = page.view[2];
 
+            // 根据视口的宽度/pdf文档宽度得到缩放比
+            const scale = viewWidth / pdfWidth;
 
-        pdf.getPage(num).then((page) => {
-              
-                // 获取DOM中为预览PDF准备好的canvasDOM对象
-                    let canvas = myVancas.value
-              let ctx = canvas.getContext('2d')
+            // 获取pdf文档的缩放后基本信息
+            const viewport = page.getViewport({ scale });
 
-              // 获取页面比率
-                let ratio = _getRatio(ctx);
- 
-                // 根据页面宽度和视口宽度的比率就是内容区的放大比率
-                let dialogWidth = canvasCont.value.offsetWidth;
-                let pageWidth = page.view[2] * ratio;
-                let scale = dialogWidth / pageWidth;
-                let viewport = page.getViewport({ scale });
+            // 画布的宽高需要根据实际像素调整，避免出现模糊的情况
+            canvas.width = viewport.width * ratio;
+            canvas.height = viewport.height * ratio;
 
-                // 记录内容区宽高，后期添加水印时需要
-                width.value = viewport.width * ratio;
-                height.value = viewport.height * ratio;
+            // 准备page.render()函数需要的参数
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport,
+            };
 
-                canvas.width = width.value;
-                canvas.height = height.value;
-
-                // 缩放比率
-                ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-
-                let renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport,
-                };
-
-                page.render(renderContext).promise.then(() => {
-                    renderingPage.value = false;
-                    pageNo.value = num;
-
-                    // 添加水印
-                    _renderWatermark();
-                });
-
-        }
-        
-    )
-})
-
+            // 将数据渲染到画布上
+            page.render(renderContext).promise.then(() => {
+                // 添加水印
+                addWatermark(num, canvas.width, canvas.height);
+                
+            });
+            
+            // 多页pdf的情况
+            if (num < pdf.numPages) {
+                renderPage(num + 1);
+            }
+        });
+    });
 }
-// 在画布上渲染水印
-function _renderWatermark() {
-    let canvas = myVancas.value;
-    let ctx = canvas.getContext("2d");
-    // 平铺水印
-    let pattern = ctx.createPattern(_initWatermark(), "repeat");
-    ctx.rect(0, 0, width.value, height.value);
+
+/**
+ * 在画布上添加水印
+ * @param num 画布索引
+ */
+function addWatermark(num: number, width: number, height: number) {
+    const canvas: any = document.getElementById(`myVancas${num}`);
+    const ctx = canvas.getContext('2d');
+
+    // 方法在指定的方向内重复指定的元素，元素可以是图片、视频，或者其他 <canvas> 元素,被重复的元素可用于绘制/填充矩形、圆形或线条等等。
+    const pattern = ctx.createPattern(initWatermark(), 'repeat');
+
+    // 创建矩形
+    ctx.rect(0, 0, width, height);
+
+    // fillStyle 属性设置或返回用于填充绘画的颜色、渐变或模式，也可以设置pattern。
     ctx.fillStyle = pattern;
+
+    // 当前的图像
     ctx.fill();
 }
 
-
-    // 生成水印图片
-function  _initWatermark() {
-    let canvas = document.createElement("canvas");
+/**
+ * 初始化水印元素
+ */
+function initWatermark() {
+    const canvas = document.createElement('canvas');
     canvas.width = 200;
     canvas.height = 200;
-    let ctx = canvas.getContext("2d");
-    ctx.rotate((-18 * Math.PI) / 180);
-    ctx.font = "14px Vedana";
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.fillText('我是水印', 50, 50);
+    const ctx: any = canvas.getContext('2d');
+    ctx.rotate((45 * Math.PI) / 180);
+    ctx.font = '15px Verdana';
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx.fillText('我是水印', 30, 30);
     return canvas;
 }
 
-
-
-
-// 计算角度
-function _getRatio(ctx) {
-      let dpr = window.devicePixelRatio || 1;
-      let bsr =
+/**
+ * 获取页面的比率
+ * @param ctx canvas绘图环境的上下文
+ */
+function getRatio(ctx: any) {
+    // window对象中的属性devicePixelRatio，这个属性决定了浏览器会用多少实际的像素来渲染一个像素(也可以理解为css像素)
+    // 至于为什么要获取这个，不同设备的像素比不同，当这个像素比为2时，会用2个实际像素来渲染一个css像素，就相当于放大了视图一倍，会导致屏幕显示模糊
+    const dpr = window.devicePixelRatio || 1;
+    // canvas的context上下文中也存在一些关于像素比的属性，逻辑是canvas是用几个像素来存储画布信息
+    const bsr =
         ctx.webkitBackingStorePixelRatio ||
         ctx.mozBackingStorePixelRatio ||
         ctx.msBackingStorePixelRatio ||
         ctx.oBackingStorePixelRatio ||
         ctx.backingStorePixelRatio ||
         1;
-      return dpr / bsr;
-    }
 
+    return dpr / bsr;
+}
 
- // 渲染连续滚动PDF
- function renderScrollPdfPage(num) {
-            this.loadingTask.promise.then((pdf) => {
-                let numPages = pdf.numPages;
-                pdf.getPage(num).then((page) => {
-                    // 创建新的canvas
-                    let renderContext = this.getRenderContext(num, page);
+const visible = ref<boolean>(false);
 
-                    var renderTask = page.render(renderContext);
-                    // eslint-disable-next-line @typescript-eslint/no-this-alias
-                    let that = this;
-                    renderTask.promise.then(function () {
-                        console.log('Page rendered');
-                        if (num < numPages) {
-                            that.renderScrollPdfPage(num + 1);
-                        }
-                    });
-                });
-            });
-        }
+function showModal() {
+    visible.value = true;
+}
 </script>
 
 <style lang="scss">
 .full-modal {
-  .ant-modal {
-    max-width: 100%;
-    top: 0;
-    padding-bottom: 0;
-    margin: 0;
-  }
-  .ant-modal-content {
-    // display: flex;
-    // flex-direction: column;
-    // height: calc(100vh);
-    height: 100vh;
-    overflow-y: scroll;
-  }
-  .ant-modal-body {
-    flex: 1;
-  }
+    .ant-modal {
+        max-width: 100%;
+        top: 0;
+        padding-bottom: 0;
+        margin: 0;
+    }
+    .ant-modal-content {
+        // display: flex;
+        // flex-direction: column;
+        // height: calc(100vh);
+        height: 100vh;
+        overflow-y: scroll;
+    }
+    .ant-modal-body {
+        flex: 1;
+    }
 }
 </style>
